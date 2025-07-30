@@ -1,0 +1,9 @@
+
+I am gonna make the basic structure first.
+I will then make routes and base html file.
+
+Now I will create db with User model
+
+Then I will create forms for login, registration, logout
+
+Then I will work on dashboard

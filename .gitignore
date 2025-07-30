@@ -6,6 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+# Database
+instance/
+*.db
+*.sqlite
+*.sqlite3
+.txt
+
+
+
 # Distribution / packaging
 .Python
 build/
@@ -25,6 +34,15 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.Python
+env/
+venv/
+.venv/
+
+
+# Environment variables
+.env
+.flaskenv
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
