@@ -11,7 +11,12 @@ instance/
 *.db
 *.sqlite
 *.sqlite3
-.txt
+
+
+# Personal files
+*.txt
+check_db.py
+init_db.py
 
 
 
