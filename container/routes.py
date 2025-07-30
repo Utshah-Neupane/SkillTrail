@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash
 from container.models import User
 from container.forms import RegisterForm, LoginForm
 from container import db
-from flask_login import login_user, logout_user
+from flask_login import login_required, login_user, logout_user
 
 
 @app.route("/")
@@ -13,6 +13,7 @@ def home_page():
 
 
 @app.route("/dashboard")
+@login_required
 def dashboard_page():
     return render_template('dashboard.html')
 
