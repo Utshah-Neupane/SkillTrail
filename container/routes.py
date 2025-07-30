@@ -1,9 +1,9 @@
 from container import app
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from container.models import User
 from container.forms import RegisterForm, LoginForm
 from container import db
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user
 
 
 @app.route("/")
@@ -54,9 +54,14 @@ def login_page():
     if form.validate_on_submit():
         attempted_user = User.query.filter_by(username = form.username.data).first()
 
-        # if attempted_user and 
-
-
+        if attempted_user and attempted_user.check_password_correction(
+            form.password.data):
+            login_user(attempted_user)
+            flash(f"You have successfully logged in as {attempted_user.username}", category = 'success')
+            return redirect(url_for('dashboard_page'))
+        
+        else:
+            flash(f"Username and password don't match! Try again!", category = 'danger')
 
     return render_template('login.html', form = form)
 
