@@ -17,7 +17,7 @@
             height="40%", width="30%", style="border-radius:50%;">
 
 
-            <h2>Create Your Account</h2>
+            <h2>Create Account</h2>
             <br>
 
             {{ form.username.label() }}
@@ -32,6 +32,11 @@
             {{ form.password2.label() }}
             {{ form.password2(class = 'form-control', placeholder = 'Confirm Password') }}
             <br>
+
+            <div class="checkbox mb-3">
+                <h6>Already have an account?</h6>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">Login</a>
+             </div>
 
             {{ form.submit(class = 'btn-lg btn-block btn-primary') }}
 
