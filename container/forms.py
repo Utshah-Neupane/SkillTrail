@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import Length, Email, EqualTo, DataRequired, ValidationError
+from wtforms import IntegerField, StringField, PasswordField, SubmitField, SelectField, FloatField
+from wtforms.fields.simple import TextAreaField
+from wtforms.validators import Length, Email, EqualTo, DataRequired, ValidationError, Optional, NumberRange
 from container.models import User
 
 class RegisterForm(FlaskForm):
@@ -43,3 +44,52 @@ class LoginForm(FlaskForm):
         validators=[DataRequired()])
     
     submit = SubmitField(label='Sign In')
+
+
+
+
+
+class AddSkillForm(FlaskForm):
+    name = StringField(label = 'Skill Name:', validators = [Length(min=2, max=100),DataRequired()])
+    description = TextAreaField(label = 'Description:', validators = [Length(max=500), Optional()])
+    
+    category = SelectField(label='Category:', 
+            choices=[
+                ('Programming', 'Programming'),
+                ('Design', 'Design'),
+                ('Marketing', 'Marketing'),
+                ('Business', 'Business'),
+                ('Language', 'Language'),
+                ('Music', 'Music'),
+            ],
+            validators=[DataRequired()]
+    )
+    target_hours = IntegerField(label='Target Hours:', validators=[NumberRange(min=1, max=10000), DataRequired()])
+
+    submit = SubmitField(label="Add Skill")
+
+
+
+
+
+class LogProgressForm(FlaskForm):
+    skill_id = SelectField(label='Select Skill:', 
+        coerce=int, validators=[DataRequired()])
+    
+    hours_spent = FloatField(label='Hours Spent:', 
+        validators=[DataRequired(), NumberRange(min=0.1, max=24)])
+    
+    notes = TextAreaField(label='Notes/Achievements:', 
+        validators=[Optional(), Length(max=1000)])
+    
+    difficulty_rating = SelectField(label='Difficulty Rating:', 
+        choices=[
+            (1, '1 - Very Easy'),
+            (2, '2 - Easy'),
+            (3, '3 - Medium'),
+            (4, '4 - Hard'),
+            (5, '5 - Very Hard')
+        ], coerce=int, validators=[Optional()])
+    
+    submit = SubmitField(label='Log Progress')
+

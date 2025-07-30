@@ -39,7 +39,7 @@ class Skill(db.Model):
     description = db.Column(db.Text(), nullable = True)
     category = db.Column(db.String(length = 50), nullable = True)
     target_hours = db.Column(db.Integer(), default = 0)
-    created_date = db.Column(db.DateTime(), default = datetime.now)
+    created_date = db.Column(db.DateTime(), default = datetime.now().date())
 
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable = False)
 
@@ -68,7 +68,7 @@ class Skill(db.Model):
  
 class Progress(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    date = db.Column(db.Date(), nullable=False, default=lambda: datetime.now().date)
+    date = db.Column(db.Date(), nullable=False, default=lambda: datetime.now().date())
     hours_spent = db.Column(db.Float(), nullable=False, default=0.0)
     notes = db.Column(db.Text(), nullable=True)
     difficulty_rating = db.Column(db.Integer(), nullable=True)  # 1-5 scale
