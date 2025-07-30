@@ -4,6 +4,39 @@
     Register Page
 {% endblock %}
 
+
+
 {% block content %}
-    This is where you register an account!
+<body class = 'text-center'>
+    <div class = 'container'>
+        <form method="POST" class = 'form-register' style = "color:white;">
+            {{ form.hidden_tag() }}
+
+            <img class="mb-4" 
+            src="https://innovationatwork.ieee.org/wp-content/uploads/2019/11/bigstock-Skill-Levels-Knob-Button-Incr-318203551_1024X684.png" 
+            height="40%", width="30%", style="border-radius:50%;">
+
+
+            <h2>Create Your Account</h2>
+            <br>
+
+            {{ form.username.label() }}
+            {{ form.username(class = 'form-control', placeholder = 'User Name') }}
+            
+            {{ form.email_address.label() }}
+            {{ form.email_address(class = 'form-control', placeholder = 'Email Address') }}
+            
+            {{ form.password1.label() }}
+            {{ form.password1(class = 'form-control', placeholder = 'Password') }}
+            
+            {{ form.password2.label() }}
+            {{ form.password2(class = 'form-control', placeholder = 'Confirm Password') }}
+            <br>
+
+            {{ form.submit(class = 'btn-lg btn-block btn-primary') }}
+
+        </form>
+
+    </div>
+</body>
 {% endblock %}
