@@ -1,14 +1,60 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Dashboard 
+    Add New Skill
 {% endblock %}
 
+
+
 {% block content %}
+<div class="container mt-4 text-white">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary shadow-sm">
+                <div class="card-header border-bottom border-secondary">
+                    <h4 class="mb-0 text-white">
+                        <i class="fas fa-plus-circle"></i> Add Skill
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
 
+                        <!-- Name -->
+                        <div class="mb-2">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control bg-secondary text-white border-0", placeholder="e.g., Python") }}
+                        </div>
 
+                        <!-- Category -->
+                        <div class="mb-2">
+                            {{ form.category.label(class="form-label") }}
+                            {{ form.category(class="form-select bg-secondary text-white border-0") }}
+                        </div>
 
+                        <!-- Target Hours -->
+                        <div class="mb-2">
+                            {{ form.target_hours.label(class="form-label") }}
+                            {{ form.target_hours(class="form-control bg-secondary text-white border-0", placeholder="e.g., 100") }}
+                        </div>
 
+                        <!-- Description -->
+                        <div class="mb-2">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control bg-secondary text-white border-0", rows="3", placeholder="What do you plan to achieve?") }}
+                        </div>
 
-
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ url_for('dashboard_page') }}" class="btn btn-outline-light">
+                                <i class="fas fa-arrow-left"></i> Dashboard
+                            </a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

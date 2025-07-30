@@ -1,14 +1,68 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Dashboard 
+    Log Progress
 {% endblock %}
 
+
+
 {% block content %}
+<div class="container mt-4 text-white">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary shadow-sm">
+                <div class="card-header border-bottom border-secondary">
+                    <h4 class="mb-0 text-white">
+                        <i class="fas fa-chart-line"></i> Log Daily Progress
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info text-dark bg-opacity-75">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Note:</strong> You can only log progress once per day per skill.
+                    </div>
 
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
 
+                        <!-- Skill Selection -->
+                        <div class="mb-2">
+                            {{ form.skill_id.label(class="form-label") }}
+                            {{ form.skill_id(class="form-select bg-secondary text-white border-0") }}
+                        </div>
 
+                        <!-- Hours Spent -->
+                        <div class="mb-2">
+                            {{ form.hours_spent.label(class="form-label") }}
+                            <div class="input-group">
+                                {{ form.hours_spent(class="form-control bg-secondary text-white border-0", placeholder="Hours spent today", step="0.1") }}
+                                <span class="input-group-text bg-secondary text-white border-0">hrs</span>
+                            </div>
+                        </div>
 
+                        <!-- Difficulty -->
+                        <div class="mb-2">
+                            {{ form.difficulty_rating.label(class="form-label") }}
+                            {{ form.difficulty_rating(class="form-select bg-secondary text-white border-0") }}
+                        </div>
 
+                        <!-- Notes -->
+                        <div class="mb-2">
+                            {{ form.notes.label(class="form-label") }}
+                            {{ form.notes(class="form-control bg-secondary text-white border-0", rows="3", placeholder="Any notes or reflections...") }}
+                        </div>
 
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ url_for('dashboard_page') }}" class="btn btn-outline-light">
+                                <i class="fas fa-arrow-left"></i> Dashboard
+                            </a>
+                            {{ form.submit(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
