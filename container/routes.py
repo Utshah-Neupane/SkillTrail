@@ -188,6 +188,15 @@ def delete_skill(skill_id):
 
 
 
+@app.route('/charts')
+def charts_page():
+    return render_template('charts.html')
+
+
+
+
+
+
 
 
 
