@@ -59,7 +59,7 @@ class Skill(db.Model):
         return progress_hrs_input
     
     @property
-    def percentage_progress(self):
+    def progress_percentage(self):
         if self.target_hours == 0:
             return 0
         return min(100, (self.total_hours_logged / self.target_hours)*100)

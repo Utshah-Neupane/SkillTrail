@@ -5,5 +5,153 @@
 {% endblock %}
 
 {% block content %}
-    This is your personal dashboard!
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-tachometer-alt"></i> Your Skills
+            </h2>
+            
+            <!-- Action Buttons -->
+            <div class="mb-4">
+                <a href="{{url_for('add_skill_page')}}" class="btn btn-primary me-2">
+                    <i class="fas fa-plus"></i> Add New Skill
+                </a>
+                <a href="{{url_for('log_progress_page')}}" class="btn btn-success">
+                    <i class="fas fa-chart-line"></i> Log Progress
+                </a>
+            </div>
+
+            {% if skills %}
+            <!-- Skills Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Your Skills ({{ skills|length }})</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Skill Name</th>
+                                    <th>Category</th>
+                                    <th>Target Hours</th>
+                                    <th>Hours Logged</th>
+                                    <th>Progress</th>
+                                    <th>Created</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for skill in skills %}
+                                <tr>
+                                    <td><strong>{{skill.name}}</strong><br>
+                                        {% if skill.description %}
+                                        <small class="text-muted">{{ skill.description[:50]}}
+                                            {% if skill.description|length > 50 %}
+                                                ...
+                                            {% endif %}
+                                        </small>
+                                        {% endif %}
+                                    </td>
+
+                                    <td><span class="badge bg-secondary fs-6 px-3 py-2">
+                                        {{ skill.category }}</span>
+                                    </td>
+                                    
+                                    
+                                    <td>{{ skill.target_hours }}h</td>
+                                    
+                                    <td>{{ "%.1f"|format(skill.total_hours_logged) }}h</td>
+                                    
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar
+                                                {% if skill.progress_percentage < 25 %}bg-danger
+                                                {% elif skill.progress_percentage < 50 %}bg-warning
+                                                {% elif skill.progress_percentage < 75 %}bg-info
+                                                {% else %}bg-success
+                                                {% endif %}" 
+
+                                            role="progressbar" 
+                                            style="width: 45.5%;" 
+                                            aria-valuenow="45.5" 
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            {{ "%.1f"|format(skill.progress_percentage) }}%
+                                        </div>
+                                        </div>
+                                    </td>
+
+                                    <td>{{ skill.created_date.strftime('%Y-%m-%d') }}</td>
+                                    
+                                    <td>
+                                        <form method="POST" action="{{ url_for('delete_skill', skill_id=skill.id) }}" 
+                                            style="display: inline;"
+                                            onsubmit = "return confirm('Are you sure you want to delete this skill? All progress will be lost!') ">
+                                            <button class="btn btn-sm btn-danger" title="Delete Skill">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ skills|length }}</h5>
+                            <p class="card-text">Total Skills</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ "%1.f"|format(skills|sum(attribute='total_hours_logged')) }}h</h5>
+                            <p class="card-text">Total Hours</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ skills|sum(attribute='target_hours')}}h</h5>
+                            <p class="card-text">Target Hours</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center bg-warning text-white">
+                        <div class="card-body">
+                            {% set avg_progress = (skills|sum(attribute='progress_percentage') / skills|length) if skills|length > 0 else 0 %}
+                            <h5 class="card-title">{{ "%.1f"|format(avg_progress)}}%</h5>
+                            <p class="card-text">Avg Progress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-5">
+                <i class="fas fa-graduation-cap fa-5x text-muted mb-3"></i>
+                <h4 class="text-muted">No Skills Yet!</h4>
+                <p class="text-muted">Start your learning journey by adding your first skill.</p>
+                <a href="{{ url_for('add_skill_page') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Add Your First Skill
+                </a>
+            </div>
+        
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

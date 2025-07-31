@@ -166,6 +166,22 @@ def log_progress_page():
 
 
 
+@app.route("/delete-skill/<int:skill_id>", methods=['POST'])
+@login_required
+def delete_skill(skill_id):
+    skill = Skill.query.get_or_404(skill_id)
+    
+    # Check if the skill belongs to the current user
+    if skill.user_id != current_user.id:
+        flash("You can only delete your own skills!", category='danger')
+        return redirect(url_for('dashboard_page'))
+    
+    skill_name = skill.name
+    db.session.delete(skill)
+    db.session.commit()
+    
+    flash(f"Skill '{skill_name}' and all its progress entries have been deleted!", category='success')
+    return redirect(url_for('dashboard_page'))
 
 
 
