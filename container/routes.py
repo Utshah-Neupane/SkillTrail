@@ -189,7 +189,47 @@ def delete_skill(skill_id):
 
 
 @app.route('/charts')
+@login_required
 def charts_page():
+    user_skills = Skill.query.filter_by(user_id = current_user.id).all()
+
+
+    #Chart 1: Progress Overview
+    progress_categories = {'Beginner (0-49%)': 0, 'Intermediate (50-74%)': 0, 
+                    'Advanced (75-99%)': 0, 'Completed (100%)': 0}
+
+    
+    for skill in user_skills:
+        percentage = skill.progress_percentage
+        if percentage == 100:
+            progress_categories['Completed (100%)'] += 1
+        elif percentage >= 75:
+            progress_categories['Advanced (75-99%)'] += 1
+        elif percentage >= 50:
+            progress_categories['Intermediate (50-74%)'] += 1
+        else:
+            progress_categories['Beginner (0-49%)'] += 1
+    
+
+    return render_template('charts.html', progress_categories = progress_categories)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return render_template('charts.html')
 
 
