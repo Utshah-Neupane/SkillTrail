@@ -242,9 +242,8 @@ def charts_page():
     category_dict = {}
 
     for skill in user_skills:
-        category_dict[skill.category] = category_dict.get(skill.category, 0)
-        
-
+        category_name = skill.category or "Uncategorized"
+        category_dict[category_name] = skill.total_hours_logged + category_dict.get(category_name, 0)
 
 
     charts_data = {
@@ -256,6 +255,11 @@ def charts_page():
         'learning_trends': {
             'labels': date_range,
             'data': hours_data
+        },
+
+        'category_breakdown':{
+            'labels' : list(category_dict.keys()),
+            'data': list(category_dict.values())
         }
     }
     

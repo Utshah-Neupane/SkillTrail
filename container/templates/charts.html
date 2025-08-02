@@ -163,6 +163,68 @@
 
 
 
+      //Chart 3: Category Breakdown (Bar) - hours per skill category
+      const category_ctx = document.getElementById('categoryChart');
+      
+      const colors = [
+                    '#FF6B6B',
+                    '#4ECDC4',
+                    '#45B7D1',
+                    '#96CEB4',
+                    '#FECA57',
+                    '#FF9FF3',
+                    '#54A0FF']
+
+        chart = new Chart(category_ctx, {
+          type: 'bar',
+          data: {
+            labels: chartsData.category_breakdown.labels,
+            datasets: [{
+              label: 'Hours Spent',
+              data: chartsData.category_breakdown.data,
+              backgroundColor: colors.slice(0,chartsData.category_breakdown.labels.length),    
+              borderColor: '#4ECDC4',
+              borderWidth: 2,
+              fill: true,
+              borderRadius: 8,
+              borderSkipped: false
+            }]
+          },
+
+          options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display : true,
+                text: 'Total Hours'
+              }
+            },
+            x: {
+              title : {
+                display: true,
+                text: 'Skill Categories '
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y + ' hours';
+                }
+              }
+            }
+          }
+        }
+      });
+
+
+
 
 
     </script>
