@@ -62,29 +62,25 @@
 
     <script>
       //Get data from Flask backend
-      const progressData = {{ progress_categories|tojson }};  
-
-      const labels = Object.keys(progressData)
-      const data = Object.values(progressData);
-
-      const colors = [
-      '#FF6B6B',  // Beginner - Red
-      '#4ECDC4',  // Intermediate - Teal  
-      '#45B7D1',  // Advanced - Blue
-      '#96CEB4'   // Completed - Green
-  ];
-
-      const ctx = document.getElementById('progressChart');
+      const chartsData = {{ charts_data|tojson }}; 
       
-        chart = new Chart(ctx, {
+      
+      //Chart 1: 'Skills Progress Overview
+      const progress_ctx = document.getElementById('progressChart');
+      
+        chart = new Chart(progress_ctx, {
           type: 'doughnut',
           data: {
-            labels: labels,
+            labels: chartsData.progress_overview.labels,
             datasets: [{
-              label: 'Skills Count',
-              backgroundColor: colors,
+              data: chartsData.progress_overview.data,
+              backgroundColor: [
+                  '#FF6B6B',  // Beginner - Red
+                  'khaki',  // Intermediate - Teal  
+                  '#45B7D1',  // Advanced - Blue
+                  '#96CEB4' ],  // Completed - Green
+        
               borderColor: '#fff',
-              data: data,
               borderWidth: 2
             }]
           },
@@ -103,14 +99,72 @@
               callbacks: {
                 label: function(context) {
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
-                return context.label + ': ' + context.parsed + ' skills (' + percentage + '%)';
+                  const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
+                  return context.label + ': ' + context.parsed + ' skills (' + percentage + '%)';
                 }
               }
             }
           }
         }
       });
+
+
+
+      //Chart 2: Learning trend - hours over time
+      const trends_ctx = document.getElementById('trendsChart');
+      
+        chart = new Chart(trends_ctx, {
+          type: 'line',
+          data: {
+            labels: chartsData.learning_trends.labels,
+            datasets: [{
+              label: 'Hours Spent',
+              data: chartsData.learning_trends.data,
+              backgroundColor: 'rgba(78, 205, 196, 0.1)',        
+              borderColor: '#4ECDC4',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointBackgroundColor: '#4ECDC4',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              pointRadius: 4
+            }]
+          },
+
+          options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display : true,
+                text: 'Hours'
+              }
+            },
+            x: {
+              title : {
+                display: true,
+                text: 'Date'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          }
+        }
+      });
+
+
+
+
+
     </script>
 
 {% endblock %}

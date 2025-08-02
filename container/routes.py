@@ -4,7 +4,8 @@ from container.models import User, Skill, Progress
 from container.forms import RegisterForm, LoginForm, AddSkillForm, LogProgressForm
 from container import db
 from flask_login import login_required, login_user, logout_user, current_user
-from datetime import datetime
+from datetime import datetime, timedelta
+from sqlalchemy import func
 
 
 @app.route("/")
@@ -198,7 +199,6 @@ def charts_page():
     progress_categories = {'Beginner (0-49%)': 0, 'Intermediate (50-74%)': 0, 
                     'Advanced (75-99%)': 0, 'Completed (100%)': 0}
 
-    
     for skill in user_skills:
         percentage = skill.progress_percentage
         if percentage == 100:
@@ -211,26 +211,58 @@ def charts_page():
             progress_categories['Beginner (0-49%)'] += 1
     
 
-    return render_template('charts.html', progress_categories = progress_categories)
+
+    # Chart 2: Learning Trends
+    end_date = datetime.now().date()
+    start_date = end_date - timedelta(days=29)
+
+    # Fixed query syntax
+    daily_progress = db.session.query(
+        Progress.date,
+        func.sum(Progress.hours_spent).label('hours_spent')
+        ).join(Skill).filter(
+            Skill.user_id == current_user.id,
+            Progress.date >= start_date,
+            Progress.date <= end_date
+        ).group_by(Progress.date).order_by(Progress.date).all()
+    
+    date_range = []
+    hours_data = []
+    current_date = start_date
+    progress_dict = {entry.date: float(entry.hours_spent) for entry in daily_progress}
+
+    while current_date <= end_date:
+        date_range.append(current_date.strftime('%m:%d'))
+        hours_data.append(progress_dict.get(current_date,0))
+        current_date += timedelta(days = 1)
+
+
+    
+    #Chart 3: Category Breakdown (Hours spent per skill category)
+    category_dict = {}
+
+    for skill in user_skills:
+        category_dict[skill.category] = category_dict.get(skill.category, 0)
+        
 
 
 
+    charts_data = {
+        'progress_overview':{
+            'labels' : list(progress_categories.keys()),
+            'data' : list(progress_categories.values())
+        },
+
+        'learning_trends': {
+            'labels': date_range,
+            'data': hours_data
+        }
+    }
+    
+
+    return render_template('charts.html', charts_data = charts_data)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return render_template('charts.html')
 
 
 
