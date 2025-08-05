@@ -6,6 +6,7 @@ from container import db
 from flask_login import login_required, login_user, logout_user, current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func
+import pandas as pd
 
 
 @app.route("/")
@@ -274,6 +275,68 @@ def charts_page():
 
 
 
+@app.route('/reports')
+@login_required
+def reports_page():
+    user_skills = Skill.query.filter_by(user_id=current_user.id).all()
+
+    if not user_skills:
+        flash('Add some skills and log progress to generate reports!', category = 'info')
+        return redirect(url_for('add_skill_page'))
+    
+
+    #Get all progress entries for the user
+    all_progress = []
+
+    for skill in user_skills:
+        for progress in skill.progress_entries:
+            all_progress.append({
+                'skill_name': skill.name,
+                'category': skill.category,
+                'date': progress.date,
+                'hours_spent': progress.hours_spent,
+                'difficulty_rating': progress.difficulty_rating,
+                'target_hours': skill.target_hours,
+                'total_logged':skill.total_hours_logged,
+                'completion_rate': skill.progress_percentage
+            })
+    
+    if not all_progress:
+        flash('Log some progress to see detailed reports!', category = 'info')
+        return redirect(url_for('log_progress_page'))
+    
+    #Creating the dataframe for analysis
+    df = pd.DataFrame(all_progress)
+
+
+    #Analysis 1: Learning Velocity (hrs per day)
+    df['date'] = pd.to_datetime(df['date'])
+    daily_hours = df.groupby('date')['hours_spent'].sum().reset_index()
+    avg_daily_hours = daily_hours['hours_spent'].mean()
+
+
+    #Analysis 2: Most/Least productive days
+    df['day_of_week'] = df['date'].dt.day_name()
+    productivity_by_day = df.groupby('day_of_week')['hours_spent'].sum().sort_values(ascending = False)
+
+
+
+
+
+
+
+
+
+    #Data to pass to .html file
+    reports_data = {
+        'total_skills': len(user_skills),
+        'total_hours_logged': sum(skill.total_hours_logged for skill in user_skills),
+        'avg_daily_hours': round(avg_daily_hours,2),
+        'most_productive_day': productivity_by_day.index[0] if not productivity_by_day.empty else 'N/A',
+        'least_productive_day': productivity_by_day.index[-1] if not productivity_by_day.empty else 'N/A'
+    }
+    
+    return render_template('reports.html', reports_data = reports_data)
 
 
 

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Reports - SkillTrail Analytics
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-chart-line"></i> Advanced Learning Reports
+            </h2>
+        </div>
+    </div>
+    
+    
+     <!-- Summary Cards -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3>{{ reports_data.total_skills }}</h3>
+                    <p class="mb-0">Total Skills</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3>{{ reports_data.total_hours_logged }}</h3>
+                    <p class="mb-0">Hours Logged</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3>{{ reports_data.avg_daily_hours }}</h3>
+                    <p class="mb-0">Average Daily Hours</p>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+
+
+
+    <!-- Productivity Analysis -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="card bg-light text-dark">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-calendar-week"></i> Productivity by Day</h5>
+                </div>
+
+                <div class="card-body">
+                    <p><strong>Most Productive:</strong>{{reports_data.most_productive_day}}</p>
+                    <p><strong>Least Productive: </strong>{{reports_data.least_productive_day}}</p>
+                    
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+{% endblock %}

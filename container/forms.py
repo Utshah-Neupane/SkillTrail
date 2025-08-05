@@ -61,6 +61,7 @@ class AddSkillForm(FlaskForm):
                 ('Business', 'Business'),
                 ('Language', 'Language'),
                 ('Music', 'Music'),
+                ('Other', 'Other'),
             ],
             validators=[DataRequired()]
     )
