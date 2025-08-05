@@ -29,7 +29,6 @@
             </div>
         </div>
 
-
         <div class="col-md-3">
             <div class="card bg-primary text-white">
                 <div class="card-body text-center">
@@ -39,12 +38,20 @@
             </div>
         </div>
 
-
         <div class="col-md-3">
             <div class="card bg-primary text-white">
                 <div class="card-body text-center">
                     <h3>{{ reports_data.avg_daily_hours }}</h3>
                     <p class="mb-0">Average Daily Hours</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3>{{ reports_data.recent_hours }}</h3>
+                    <p class="mb-0">Last 7 Days (Hours)</p>
                 </div>
             </div>
         </div>
@@ -56,23 +63,67 @@
 
     <!-- Productivity Analysis -->
     <div class="row mb-4">
+        
         <div class="col-lg-6">
-            <div class="card bg-light text-dark">
+            <div class="card" style="background-color: #D3D3D3; color: black;">
                 <div class="card-header">
                     <h5 class="mb-0"><i class="fas fa-calendar-week"></i> Productivity by Day</h5>
                 </div>
-
                 <div class="card-body">
                     <p><strong>Most Productive:</strong>{{reports_data.most_productive_day}}</p>
                     <p><strong>Least Productive: </strong>{{reports_data.least_productive_day}}</p>
-                    
 
-
-
-
+                    <h6><strong>Weekly Breakdown:</strong></h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thread>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Total Hours</th>
+                                </tr>
+                            </thread>
+                            <tbody>
+                                {% for day, hours in reports_data.productivity_by_day.items() %}
+                                <tr>
+                                    <td>{{ day }}</td>
+                                    <td>{{ "%.1f"|format(hours) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="col-lg-6">
+            <div class="card" style="background-color: #D3D3D3; color: black;">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-calendar-week"></i>Recent Performance</h5>
+                </div>
+
+                <div class="card-body">
+                    <p><strong>Last 7 Days Total: </strong>{{ "%.1f"|format(reports_data.recent_hours) }} hours</p>
+                    <p><strong>Recent Daily Average: </strong>{{ "%.1f"|format(reports_data.recent_avg[0]) }} hours</p>
+                    
+                    {% if reports_data.recent_avg[0] > reports_data.avg_daily_hours %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-arrow-up"></i>You're performing above your average! Keep it up!
+                    </div>
+                    {% elif reports_data.recent_avg[0] < reports_data.avg_daily_hours %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-arrow-down"></i>Recent performance is below average. Consider adjusting your schedule.
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-equals"></i>You're maintaining consistent performance.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
@@ -82,6 +133,6 @@
 
 
 
-    </div>
+
 </div>
 {% endblock %}

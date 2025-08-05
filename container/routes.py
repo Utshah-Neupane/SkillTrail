@@ -320,10 +320,23 @@ def reports_page():
     productivity_by_day = df.groupby('day_of_week')['hours_spent'].sum().sort_values(ascending = False)
 
 
+    #Analysis 3: Category Performance
+    category_stats = df.groupby('category').agg({
+        'hours_spent' : ['sum', 'mean', 'count'],
+        'difficulty_rating': 'mean',
+        'completion_rate': 'mean'
+    }).round(2)
+
+
+    #Analysis 4: Goal achievement prediction
 
 
 
-
+    #Analysis 5: Recent Performance Trends
+    last_7_days = datetime.now().date() - timedelta(days = 7)
+    recent_df = df[df['date'] >= pd.to_datetime(last_7_days)]
+    recent_hours = recent_df['hours_spent'].sum()
+    recent_average = recent_df.groupby('date')['hours_spent'].mean() if not recent_df.empty else 0
 
 
 
@@ -333,7 +346,11 @@ def reports_page():
         'total_hours_logged': sum(skill.total_hours_logged for skill in user_skills),
         'avg_daily_hours': round(avg_daily_hours,2),
         'most_productive_day': productivity_by_day.index[0] if not productivity_by_day.empty else 'N/A',
-        'least_productive_day': productivity_by_day.index[-1] if not productivity_by_day.empty else 'N/A'
+        'least_productive_day': productivity_by_day.index[-1] if not productivity_by_day.empty else 'N/A',
+        'category_performance': category_stats.to_dict() if not category_stats.empty else {},
+        'productivity_by_day': productivity_by_day.to_dict(),
+        'recent_hours': recent_hours,
+        'recent_avg': recent_average
     }
     
     return render_template('reports.html', reports_data = reports_data)
