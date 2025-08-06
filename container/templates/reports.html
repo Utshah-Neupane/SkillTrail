@@ -189,6 +189,76 @@
 
 
 
+    <!-- Learning Recommendation -->
+     <!-- Learning Recommendations -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-light text-dark">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Learning Recommendations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Focus Areas:</h6>
+                            <ul>
+                                {% for skill in reports_data.skills_analysis %}
+                                    {% if skill.progress < 25 %}
+                                        <li class="text-danger">
+                                            <strong>{{ skill.name }}</strong> - Needs more attention ({{ "%.1f"|format(skill.progress) }}% complete)
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Nearly Complete:</h6>
+                            <ul>
+                                {% for skill in reports_data.skills_analysis %}
+                                    {% if skill.progress >= 75 %}
+                                        <li class="text-success">
+                                            <strong>{{ skill.name }}</strong> - Almost there! ({{ "%.1f"|format(skill.progress) }}% complete)
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h6>Productivity Tips:</h6>
+                        <div class="alert alert-info">
+                            <ul class="mb-0">
+                                <li>Your most productive day is <strong>{{ reports_data.most_productive_day }}</strong> - try to schedule important learning sessions then!</li>
+                                <li>Consider increasing study time on <strong>{{ reports_data.least_productive_day }}</strong> to balance your weekly schedule.</li>
+                                <li>Your current daily average is <strong>{{ reports_data.avg_daily_hours }} hours</strong> - small consistent increases can lead to big improvements!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Exporting csv file -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <div class="card bg-light text-dark">
+                <div class="card-body">
+                    <h5>Export Reports</h5>
+                    <p class="text-muted">Download your learning data for external analysis</p>
+                    <a href="{{ url_for('export_csv') }}" class="btn btn-success me-2">
+                        <i class="fas fa-file-csv"></i> Export to CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 

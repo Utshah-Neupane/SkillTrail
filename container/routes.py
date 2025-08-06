@@ -1,5 +1,5 @@
 from container import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, make_response
 from container.models import User, Skill, Progress
 from container.forms import RegisterForm, LoginForm, AddSkillForm, LogProgressForm
 from container import db
@@ -167,7 +167,6 @@ def log_progress_page():
 
 
 
-
 @app.route("/delete-skill/<int:skill_id>", methods=['POST'])
 @login_required
 def delete_skill(skill_id):
@@ -194,6 +193,10 @@ def delete_skill(skill_id):
 @login_required
 def charts_page():
     user_skills = Skill.query.filter_by(user_id = current_user.id).all()
+
+    if not user_skills:
+        flash('Add some skills to see progress!', category='warning')
+        return redirect(url_for('add_skill_page'))
 
 
     #Chart 1: Progress Overview
@@ -266,8 +269,6 @@ def charts_page():
     
 
     return render_template('charts.html', charts_data = charts_data)
-
-
 
 
 
@@ -381,6 +382,46 @@ def reports_page():
     }
     
     return render_template('reports.html', reports_data = reports_data)
+
+
+
+
+
+
+@app.route('/export/csv')
+@login_required
+def export_csv():
+    user_skills = Skill.query.filter_by(user_id = current_user.id).all()
+
+    if not user_skills:
+        flash("No data to export!", category = 'warning')
+        return redirect(url_for('reports_page'))
+    
+
+    export_data = []
+    for skill in user_skills:
+        for progress in skill.progress_entries:
+            export_data.append({
+                'Date': progress.date,
+                'skill Name': skill.name,
+                'Category': skill.category,
+                'Hours Spent': progress.hours_spent,
+                'Difficulty Rating': progress.difficulty_rating,
+                'Notes': progress.notes,
+                'Target Hours': skill.target_hours,
+                'Total Hours Logged': skill.total_hours_logged,
+                'Progress Percentage': round(skill.progress_percentage,2)
+            })
+    
+    df = pd.DataFrame(export_data)
+    csv_data = df.to_csv(index=False)
+
+    response = make_response(csv_data)
+    response.headers['Content-Type'] = 'text/csv'
+    response.headers['Content-Disposition'] = f'attachment; filename=skilltrail_data_{datetime.now().strftime('%Y-%m-%d')}.csv'
+
+    return response
+
 
 
 
