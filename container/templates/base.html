@@ -51,6 +51,15 @@
       {% if current_user.is_authenticated %}
       <ul class = "navbar-nav">
 
+        {% if current_user.is_premium %}
+        <li class="nav-item">
+            <span class="nav-link text-warning">
+                <i class="fas fa-crown"></i> Premium
+            </span>
+        </li>
+        {% endif %}
+
+
         <li class="nav-item">
           <a class="nav-link" style="color:rgb(28, 236, 187); font-weight:bold;">
             {{ current_user.username }}

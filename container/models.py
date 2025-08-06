@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(length=30), nullable = False, unique = True)
     email_address = db.Column(db.String(length=50), nullable = False, unique = True)
     password_hash = db.Column(db.String(length=60), nullable = False)
+    is_premium = db.Column(db.Boolean(), default = False)
     #Relationship of this table with skill table
     skills = db.relationship('Skill', backref='owner',
                 lazy = True, cascade = 'all, delete-orphan')

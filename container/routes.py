@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from sqlalchemy import func
 import pandas as pd
 
-
 @app.route("/")
 @app.route("/home")
 def home_page():
@@ -21,8 +20,6 @@ def dashboard_page():
     # Get all skills for the current user with their progress
     skills = Skill.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', skills=skills)
-
-
 
 
 
@@ -279,6 +276,12 @@ def charts_page():
 @app.route('/reports')
 @login_required
 def reports_page():
+    # Check if user has premium access
+    if not current_user.is_premium:
+        flash("Upgrade to Premium to access advanced reports!", category='info')
+        return redirect(url_for('premium_page'))
+    
+    
     user_skills = Skill.query.filter_by(user_id=current_user.id).all()
 
     if not user_skills:
@@ -426,6 +429,26 @@ def export_csv():
 
 
 
+
+@app.route("/premium")
+@login_required
+def premium_page():
+    if current_user.is_premium:
+        return redirect(url_for('reports_page'))
+    return render_template('premium.html')
+
+
+
+@app.route('/subscribe')
+@login_required
+def subscribe():
+    current_user.is_premium = True
+    db.session.commit()
+    
+    flash("Payment successful! You now have access to Premium Reports!", category='success')
+    return redirect(url_for('reports_page'))
+
+    
 
 
 
