@@ -55,7 +55,6 @@
                 </div>
             </div>
         </div>
-    
     </div>
 
 
@@ -123,7 +122,68 @@
                 </div>
             </div>
         </div>
+    </div>
 
+
+
+    <!-- Skills Analysis -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card" style="background-color: #D3D3D3; color: black;">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-bullseye"></i> Goal Achievement Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thred>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Progress</th>
+                                    <th>Hours Logged</th>
+                                    <th>Target Hours</th>
+                                    <th>Learning Rate (hrs/day)</th>
+                                    <th>Estimated Completion</th>
+                                </tr>
+                            </thred>
+                            <tbody>
+                                {% for skill in reports_data.skills_analysis %}
+                                <tr>
+                                    <td><strong>{{ skill.name }}</strong></td>
+
+                                    <td>
+                                        <div class="progress" style="height:20px;">
+                                            <div class="progress-bar
+                                                {% if skill.progress >= 75 %}bg-success
+                                                {% elif skill.progress >= 50 %}bg-info
+                                                {% elif skill.progress >= 25 %}bg-warning
+                                                {% else %}bg-danger
+                                                {% endif %}"
+                                                style="width: {{ skill.progress }}%">
+                                                {{ "%.1f"|format(skill.progress) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>{{ skill.hours_logged }}</td>
+                                    <td>{{ skill.target_hours }}</td>
+                                    <td>{{ skill.learning_rate }}</td>
+
+                                    <td>
+                                        {% if skill.estimated_completion %}
+                                            {{ skill.estimated_completion.strftime('%Y-%m-%d') }}
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 

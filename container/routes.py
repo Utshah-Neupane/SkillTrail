@@ -329,14 +329,40 @@ def reports_page():
 
 
     #Analysis 4: Goal achievement prediction
+    skills_analysis = []
 
+    for skill in user_skills:
+        if skill.total_hours_logged > 0 and skill.progress_entries:
+
+            skill_progress = [p for p in all_progress if p['skill_name'] == skill.name]
+            skill_df = pd.DataFrame(skill_progress)
+
+            days_learning = len(skill_df)
+            hours_per_day = skill.total_hours_logged / days_learning if days_learning > 0 else 0
+            remaining_hours = max(0, skill.target_hours - skill.total_hours_logged)
+            
+            if hours_per_day > 0:
+                estimated_days = remaining_hours / hours_per_day
+                estimated_completion = datetime.now().date() + timedelta(days=int(estimated_days))
+            else:
+                estimated_completion = None
+            
+            skills_analysis.append({
+                'name': skill.name,
+                'progress': skill.progress_percentage,
+                'hours_logged': skill.total_hours_logged,
+                'target_hours': skill.target_hours,
+                'remaining_hours': remaining_hours,
+                'learning_rate': round(hours_per_day,2),
+                'estimated_completion': estimated_completion
+            })
 
 
     #Analysis 5: Recent Performance Trends
     last_7_days = datetime.now().date() - timedelta(days = 7)
     recent_df = df[df['date'] >= pd.to_datetime(last_7_days)]
     recent_hours = recent_df['hours_spent'].sum()
-    recent_average = recent_df.groupby('date')['hours_spent'].mean() if not recent_df.empty else 0
+    recent_average = recent_df.groupby('date')['hours_spent'].sum().mean() if not recent_df.empty else 0
 
 
 
@@ -350,7 +376,8 @@ def reports_page():
         'category_performance': category_stats.to_dict() if not category_stats.empty else {},
         'productivity_by_day': productivity_by_day.to_dict(),
         'recent_hours': recent_hours,
-        'recent_avg': recent_average
+        'recent_avg': (recent_average, 2),
+        'skills_analysis': skills_analysis
     }
     
     return render_template('reports.html', reports_data = reports_data)
