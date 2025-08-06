@@ -450,12 +450,12 @@ def subscribe():
 
     
 
-
-
-
-
-
-
-
-
+# Database initialization route
+@app.route('/init-db')
+def init_database():
+    try:
+        db.create_all()
+        return "Database tables created successfully!"
+    except Exception as e:
+        return f"Error creating database: {str(e)}"
 
