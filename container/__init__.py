@@ -26,6 +26,9 @@ login_manager.login_message_category = 'info'
 
 from container import routes, models
 
+with app.app_context():
+    db.create_all()
+
 
 
 
