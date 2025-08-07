@@ -6,3 +6,4 @@ Flask-WTF
 WTForms
 python-dotenv
 pandas
+email-validator
