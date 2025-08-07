@@ -6,6 +6,8 @@
 
 *Track skills, visualize progress, and unlock your potential with advanced analytics*
 
+**🌐 [Live Demo](https://skilltrail-84ny.onrender.com)** | **📂 [Source Code](https://github.com/Utshah-Neupane/SkillTrail)**
+
 [![Python](https://img.shields.io/badge/Python-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-green.svg)](https://flask.palletsprojects.com/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-orange.svg)](https://sqlalchemy.org)
@@ -24,6 +26,12 @@ SkillTrail is a comprehensive personal career growth tracking platform that empo
 - **🎯 Set Goals**: Define target hours and track completion percentages
 - **📋 Generate Reports**: Advanced analytics with pandas-powered insights
 - **💾 Export Data**: Download your progress data in CSV format
+
+## 🌐 Live Demo
+
+**🚀 [Try SkillTrail Now](https://skilltrail-84ny.onrender.com)**
+
+*Experience the full application! Register an account to explore dashboard analytics, interactive charts, progress tracking, and advanced reporting features.*
 
 ## ✨ Features
 
