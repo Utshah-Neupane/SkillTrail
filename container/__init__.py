@@ -19,17 +19,24 @@ app = Flask(__name__)
 # Use Neon PostgreSQL in production, SQLite locally
 # Handle database connection with SSL for Neon PostgreSQL
 # First, check if we have a production database URL from environment variables
+# Handle database connection with SSL for Neon PostgreSQL
 database_url = os.environ.get('DATABASE_URL')
 
 if database_url and database_url.startswith('postgres'):
-    # If using Neon PostgreSQL in production, ensure SSL is required
-    # This is necessary for secure connections to Neon's servers
-    if '?' in database_url:
-        # If URL already has query parameters, append SSL mode
-        database_url += '&sslmode=require'
-    else:
-        # If no query parameters exist, add them with SSL mode
-        database_url += '?sslmode=require'
+    # Parse the URL to handle existing query parameters
+    from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+    parsed = urlparse(database_url)
+    
+    # Get existing query parameters
+    query = parse_qs(parsed.query)
+    
+    # Update or add sslmode parameter
+    query['sslmode'] = 'require'
+    
+    # Rebuild the URL with updated query
+    database_url = urlunparse(parsed._replace(
+        query=urlencode(query, doseq=True)
+    ))
     print("Using production PostgreSQL database with SSL")
 else:
     # Fall back to SQLite for local development
