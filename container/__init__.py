@@ -11,7 +11,13 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///container.db'
+#Now I'm switching to neon database so commenting this line
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///container.db'
+# Use Neon PostgreSQL in production, SQLite locally
+database_url = os.environ.get('DATABASE_URL') or 'sqlite:///container.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
+
 #So that users can't tamper session data stored on their browser
 #For flask-forms, protection to generate secure tokens
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') 
