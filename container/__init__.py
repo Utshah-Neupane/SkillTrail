@@ -53,6 +53,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 #For flask-forms, protection to generate secure tokens
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') 
 
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True,      # Check if connection is alive before using
+    'pool_recycle': 290,        # Recycle connections before database timeout (5 minutes)
+    'pool_timeout': 10,         # Wait 10 seconds for a connection
+    'pool_size': 5,             # Maintain up to 5 connections
+    'max_overflow': 10,         # Allow up to 10 connections during peak
+    'pool_use_lifo': True       # Use last-in-first-out for better connection reuse
+}
+
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
