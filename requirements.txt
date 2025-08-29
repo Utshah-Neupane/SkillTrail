@@ -7,3 +7,4 @@ WTForms
 python-dotenv
 pandas
 email-validator
+requests
