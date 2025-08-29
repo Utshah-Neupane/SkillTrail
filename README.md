@@ -10,6 +10,8 @@
 
 [![Python](https://img.shields.io/badge/Python-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-green.svg)](https://flask.palletsprojects.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Neon](https://img.shields.io/badge/Neon-000000.svg?logo=neon&logoColor=white)](https://neon.tech/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-orange.svg)](https://sqlalchemy.org)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-purple.svg)](https://getbootstrap.com)
 [![Chart.js](https://img.shields.io/badge/Chart.js-red.svg)](https://chartjs.org)
