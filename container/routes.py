@@ -459,3 +459,15 @@ def init_database():
     except Exception as e:
         return f"Error creating database: {str(e)}"
 
+
+
+
+
+#Route for keeping my service 24/7 active 
+@app.route('/keep-alive')
+def keep_alive():
+    return {
+        "status": "alive",
+        "timestamp": datetime.now().isoformat(),
+        "message": "SkillTrail server is running"
+    }
