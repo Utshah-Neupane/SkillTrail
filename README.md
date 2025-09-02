@@ -29,6 +29,12 @@ SkillTrail is a comprehensive personal career growth tracking platform that empo
 - **📋 Generate Reports**: Advanced analytics with pandas-powered insights
 - **💾 Export Data**: Download your progress data in CSV format
 
+## 🎥 Demo Video
+
+[![SkillTrail Demo](https://img.shields.io/badge/📺_Watch_Demo-FF2D20?style=for-the-badge&logo=loom&logoColor=white)](https://www.loom.com/share/04dbe5885f2a45dbbb51f57a8088fb34?sid=65b274c2-7be0-4cee-8ae8-99a3d835d577)
+
+*Click the button above to watch a quick demo of SkillTrail in action!*
+
 ## 🌐 Live Demo
 
 **🚀 [Try SkillTrail Now](https://skilltrail-84ny.onrender.com)**
