@@ -463,11 +463,11 @@ def init_database():
 
 
 
-#Route for keeping my service 24/7 active 
-@app.route('/keep-alive')
-def keep_alive():
-    return {
-        "status": "alive",
-        "timestamp": datetime.now().isoformat(),
-        "message": "SkillTrail server is running"
-    }
+# #Route for keeping my service 24/7 active 
+# @app.route('/keep-alive')
+# def keep_alive():
+#     return {
+#         "status": "alive",
+#         "timestamp": datetime.now().isoformat(),
+#         "message": "SkillTrail server is running"
+#     }
