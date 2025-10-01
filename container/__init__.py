@@ -76,10 +76,10 @@ from container import routes, models
 with app.app_context():
     db.create_all()
 
-# # Start cron job for keeping server alive
-# if os.environ.get('RENDER'):  # Only run on Render, not locally
-#     from container.cron import start_cron_job
-#     start_cron_job()
+# Start cron job for keeping server alive
+if os.environ.get('RENDER'):  # Only run on Render, not locally
+    from container.cron import start_cron_job
+    start_cron_job()
 
 
 
