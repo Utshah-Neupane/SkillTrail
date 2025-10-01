@@ -18,6 +18,7 @@ instance/
 check_db.py
 init_db.py
 for_resume.txt
+container/cron.py
 
 
 
