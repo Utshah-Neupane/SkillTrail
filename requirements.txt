@@ -9,3 +9,4 @@ pandas
 email-validator
 requests
 psycopg2-binary
+gunicorn
